@@ -1,10 +1,10 @@
-package com.example.EcoBazaar_module2.controller;
+package com.ecobazaar.controller;
 
 
-import com.example.EcoBazaar_module2.dtos.ProductFilterDTO;
-import com.example.EcoBazaar_module2.dtos.ProductRequestDTO;
-import com.example.EcoBazaar_module2.dtos.ProductResponseDTO;
-import com.example.EcoBazaar_module2.service.ProductService;
+import com.ecobazaar.dtos.ProductFilterDTO;
+import com.ecobazaar.dtos.ProductRequestDTO;
+import com.ecobazaar.dtos.ProductResponseDTO;
+import com.ecobazaar.service.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -17,7 +17,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
 import java.util.List;
-
 @RestController
 @RequestMapping("/api/products")
 @RequiredArgsConstructor

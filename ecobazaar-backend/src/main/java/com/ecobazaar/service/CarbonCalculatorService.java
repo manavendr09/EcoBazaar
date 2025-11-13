@@ -1,7 +1,7 @@
-package com.example.EcoBazaar_module2.service;
+package com.ecobazaar.service;
 
 
-import com.example.EcoBazaar_module2.model.Product;
+import com.ecobazaar.model.Product;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -10,7 +10,8 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.HashMap;
 import java.util.Map;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Service
 @Slf4j

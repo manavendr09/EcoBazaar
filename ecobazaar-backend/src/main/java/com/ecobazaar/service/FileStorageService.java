@@ -1,6 +1,6 @@
-package com.example.EcoBazaar_module2.service;
+package com.ecobazaar.service;
 
-import com.example.EcoBazaar_module2.exceptions.StorageException;
+import com.ecobazaar.exceptions.StorageException;
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;

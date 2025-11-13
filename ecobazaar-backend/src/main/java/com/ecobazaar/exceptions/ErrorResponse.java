@@ -1,4 +1,4 @@
-package com.example.EcoBazaar_module2.exceptions;
+package com.ecobazaar.exceptions;
 
 import java.time.LocalDateTime;
 

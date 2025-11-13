@@ -1,4 +1,4 @@
-package com.example.EcoBazaar_module2.dtos;
+package com.ecobazaar.dtos;
 
 import jakarta.validation.constraints.*;
 import java.math.BigDecimal;

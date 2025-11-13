@@ -1,4 +1,4 @@
-package com.example.EcoBazaar_module2.config;
+package com.ecobazaar.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;

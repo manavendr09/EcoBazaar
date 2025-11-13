@@ -1,12 +1,12 @@
-package com.example.EcoBazaar_module2.service;
+package com.ecobazaar.service;
 
 
-import com.example.EcoBazaar_module2.dtos.ProductFilterDTO;
-import com.example.EcoBazaar_module2.dtos.ProductRequestDTO;
-import com.example.EcoBazaar_module2.dtos.ProductResponseDTO;
-import com.example.EcoBazaar_module2.exceptions.ResourceNotFoundException;
-import com.example.EcoBazaar_module2.model.Product;
-import com.example.EcoBazaar_module2.repository.ProductRepository;
+import com.ecobazaar.dtos.ProductFilterDTO;
+import com.ecobazaar.dtos.ProductRequestDTO;
+import com.ecobazaar.dtos.ProductResponseDTO;
+import com.ecobazaar.exceptions.ResourceNotFoundException;
+import com.ecobazaar.model.Product;
+import com.ecobazaar.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

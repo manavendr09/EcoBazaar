@@ -1,4 +1,4 @@
-package com.example.EcoBazaar_module2.dtos;
+package com.ecobazaar.dtos;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

@@ -1,4 +1,4 @@
-package com.example.EcoBazaar_module2.model;
+package com.ecobazaar.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
