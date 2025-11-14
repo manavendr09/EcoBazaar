@@ -1,58 +1,46 @@
 package com.ecobazaar.dtos;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.Size;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
-@Builder
-public class ProductResponseDTO {
+public class ProductUpdateDTO {
 
-    private Long id;
+    @Size(min = 2, max = 200)
     private String name;
+
     private String description;
+
+    @DecimalMin(value = "0.0", inclusive = false)
     private BigDecimal price;
-    private Long sellerId;
-    private String sellerName;
 
     private String category;
     private String subCategory;
     private String brand;
-    private String imageBase64; // Changed from imageUrl
+
+    @Min(value = 0)
     private Integer stockQuantity;
+
+    @DecimalMin(value = "0.0")
     private BigDecimal weightKg;
+
     private String dimensions;
     private String manufacturingLocation;
 
-    // Carbon data
+    @DecimalMin(value = "0.0")
     private BigDecimal carbonImpact;
-    private String carbonCalculationMethod;
-    private String carbonBreakdown;
 
-    // Eco information
     private Boolean ecoCertified;
     private String ecoCertificationDetails;
-    private BigDecimal ecoRating;
-    private String ecoLabel;
-    private String ecoBadgeColor;
-
-    // Eco features
     private Boolean recyclable;
     private Boolean biodegradable;
     private Boolean renewableEnergyUsed;
     private Boolean shippingCarbonOffset;
-
-    // Status
-    private Boolean active;
-    private Boolean verified;
-
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
 
 }

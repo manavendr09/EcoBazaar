@@ -4,6 +4,7 @@ package com.ecobazaar.controller;
 import com.ecobazaar.dtos.ProductFilterDTO;
 import com.ecobazaar.dtos.ProductRequestDTO;
 import com.ecobazaar.dtos.ProductResponseDTO;
+import com.ecobazaar.dtos.ProductUpdateDTO;
 import com.ecobazaar.service.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -14,9 +15,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import java.math.BigDecimal;
 import java.util.List;
+
 @RestController
 @RequestMapping("/api/products")
 @RequiredArgsConstructor
@@ -42,16 +45,16 @@ public class ProductController {
     }
 
     /**
-     * Update existing product
+     * Partially update existing product
      */
-    @PutMapping(value = "/{id}", consumes = {"multipart/form-data"}) // Specify consumes
-    @Operation(summary = "Update an existing product")
+    @PatchMapping(value = "/{id}", consumes = {"multipart/form-data"}) // Changed from @PutMapping to @PatchMapping
+    @Operation(summary = "Partially update an existing product")
     public ResponseEntity<ProductResponseDTO> updateProduct(
             @PathVariable Long id,
-            @Valid @RequestPart("product") ProductRequestDTO request, // Get DTO as form part
+            @Valid @RequestPart("product") ProductUpdateDTO request, // Use ProductUpdateDTO
             @RequestParam(value = "file", required = false) MultipartFile file // Get file (optional for update)
     ) {
-        log.info("REST request to update product with ID: {}", id);
+        log.info("REST request to PATCH product with ID: {}", id);
         ProductResponseDTO response = productService.updateProduct(id, request, file); // Pass file to service
         return ResponseEntity.ok(response);
     }
