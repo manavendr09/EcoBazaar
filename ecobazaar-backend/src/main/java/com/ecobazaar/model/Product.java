@@ -80,8 +80,8 @@ public class Product {
     @Column(name = "brand")
     private String brand;
 
-    @Column(name = "image_data", columnDefinition = "bytea")
-    private byte[] imageData;
+    @Column(name = "image_url", length = 500)
+    private String imageUrl;
 
     @Builder.Default
     @Column(name = "stock_quantity")

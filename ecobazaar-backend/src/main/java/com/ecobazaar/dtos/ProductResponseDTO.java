@@ -24,7 +24,7 @@ public class ProductResponseDTO {
     private String category;
     private String subCategory;
     private String brand;
-    private String imageBase64; // Changed from imageUrl
+    private String imageUrl;
     private Integer stockQuantity;
     private BigDecimal weightKg;
     private String dimensions;
