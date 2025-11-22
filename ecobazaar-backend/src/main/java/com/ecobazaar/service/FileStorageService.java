@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -21,63 +20,80 @@ import java.util.UUID;
 @Slf4j
 public class FileStorageService {
 
-    // This service is no longer used for storing files in the ProductService,
-    // as images are now saved directly to the database.
-    // Leaving the class structure in case it's needed for other file types later.
-
-    @Value("${file.upload-dir:#{null}}") // Make property optional
+    @Value("${file.upload-dir:uploads/products}")
     private String uploadDir;
 
     private Path uploadPath;
 
     @PostConstruct
     public void init() {
-        if (uploadDir != null) {
-            try {
-                uploadPath = Paths.get(uploadDir);
-                Files.createDirectories(uploadPath);
-                log.info("Initialized upload directory at: {}", uploadPath.toAbsolutePath());
-            } catch (IOException e) {
-                log.warn("Could not initialize storage location. This is OK if file.upload-dir is not set.", e);
-            }
-        } else {
-            log.info("file.upload-dir not set. File system storage service is disabled.");
+        try {
+            uploadPath = Paths.get(uploadDir);
+            Files.createDirectories(uploadPath);
+            log.info("Initialized upload directory at: {}", uploadPath.toAbsolutePath());
+        } catch (IOException e) {
+            throw new StorageException("Could not initialize storage location", e);
         }
     }
 
-    /**
-     * This method is no longer used by ProductService.
-     * @param file
-     * @return
-     */
     public String storeFile(MultipartFile file) {
-        if (uploadPath == null) {
-            throw new StorageException("Storage location is not configured.");
-        }
-        if (file.isEmpty()) {
-            throw new StorageException("Failed to store empty file.");
+        if (file == null || file.isEmpty()) {
+            return null;
         }
 
         String originalFilename = StringUtils.cleanPath(file.getOriginalFilename());
-        String extension = StringUtils.getFilenameExtension(originalFilename);
-        String uniqueFilename = UUID.randomUUID().toString() + "." + extension;
-
+        
         try {
-            Path targetLocation = this.uploadPath.resolve(uniqueFilename);
+            if (originalFilename.contains("..")) {
+                throw new StorageException("Invalid file path: " + originalFilename);
+            }
+
+            String contentType = file.getContentType();
+            if (contentType == null || !contentType.startsWith("image/")) {
+                throw new StorageException("Only image files are allowed");
+            }
+
+            String extension = getFileExtension(originalFilename);
+            String newFilename = UUID.randomUUID().toString() + extension;
+
+            Path targetLocation = uploadPath.resolve(newFilename);
             try (InputStream inputStream = file.getInputStream()) {
                 Files.copy(inputStream, targetLocation, StandardCopyOption.REPLACE_EXISTING);
             }
 
-            log.info("Stored file: {}", uniqueFilename);
-
-            // This URL refers to the file system path, which is no longer the primary storage.
-            return ServletUriComponentsBuilder.fromCurrentContextPath()
-                    .path("/uploads/")
-                    .path(uniqueFilename)
-                    .toUriString();
+            String fileUrl = "/api/products/images/" + newFilename;
+            log.info("Stored file: {} -> {}", originalFilename, fileUrl);
+            
+            return fileUrl;
 
         } catch (IOException e) {
-            throw new StorageException("Failed to store file " + originalFilename, e);
+            throw new StorageException("Failed to store file: " + originalFilename, e);
         }
+    }
+
+    public void deleteFile(String fileUrl) {
+        if (fileUrl == null || fileUrl.isEmpty()) {
+            return;
+        }
+
+        try {
+            String filename = fileUrl.substring(fileUrl.lastIndexOf("/") + 1);
+            Path filePath = uploadPath.resolve(filename);
+            
+            Files.deleteIfExists(filePath);
+            log.info("Deleted file: {}", filename);
+            
+        } catch (IOException e) {
+            log.error("Failed to delete file: {}", fileUrl, e);
+        }
+    }
+
+    public Path getFilePath(String filename) {
+        return uploadPath.resolve(filename);
+    }
+
+    private String getFileExtension(String filename) {
+        int lastDot = filename.lastIndexOf('.');
+        return (lastDot == -1) ? "" : filename.substring(lastDot);
     }
 }
